@@ -13,6 +13,7 @@ class MultiplayerViewController: UIViewController {
     @IBOutlet weak var joinCodeTextField: UITextField!
     
     let db = Firestore.firestore()
+    var currentGameRoom: GameRoom?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,9 @@ class MultiplayerViewController: UIViewController {
                 let gameRoom = try await GameRoom.create()
                 try await gameRoom.save()
                 UserDefaults.standard.set(gameRoom.gameCode, forKey: "currentMultiplayerGame")
+                
+                currentGameRoom = gameRoom
+                performSegue(withIdentifier: "goToGame", sender: self)
             } catch {
                 print("Error creating game room: \(error)")
             }
@@ -41,10 +45,20 @@ class MultiplayerViewController: UIViewController {
                 if let gameRoom {
                     try await gameRoom.join()
                     UserDefaults.standard.set(gameRoom.gameCode, forKey: "currentMultiplayerGame")
+                    
+                    currentGameRoom = gameRoom
+                    performSegue(withIdentifier: "goToGame", sender: self)
                 }
             } catch {
                 print("Error fetching/joining game room: \(error)")
             }
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let currentGameRoom {
+            let destinationVC = segue.destination as! GameViewController
+            destinationVC.gameCode = currentGameRoom.gameCode
         }
     }
 }

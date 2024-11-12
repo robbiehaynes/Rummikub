@@ -77,8 +77,6 @@ class GameRoom : Codable {
             if !doc.exists {
                 return gameCode
             }
-            
-            // If the code already exists, loop again to generate a new code
         }
     }
 }
