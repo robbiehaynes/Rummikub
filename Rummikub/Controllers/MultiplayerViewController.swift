@@ -58,7 +58,7 @@ class MultiplayerViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let currentGameRoom {
             let destinationVC = segue.destination as! GameViewController
-            destinationVC.gameCode = currentGameRoom.gameCode
+            destinationVC.gameRoom = currentGameRoom
         }
     }
 }

@@ -51,7 +51,7 @@
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                         </buttonConfiguration>
                                         <connections>
-                                            <segue destination="tC7-GE-bsN" kind="show" identifier="goToMultiplayer" id="9gi-Y8-4HV"/>
+                                            <action selector="multiplayerPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Pwi-4B-Aus"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -65,6 +65,10 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="TH6-b8-Rp1"/>
+                    <connections>
+                        <outlet property="multiplayerButton" destination="chX-be-SKz" id="TRX-8h-pYY"/>
+                        <segue destination="tC7-GE-bsN" kind="show" identifier="goToMultiplayer" id="Www-AQ-YM2"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

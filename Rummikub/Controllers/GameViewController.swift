@@ -13,7 +13,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var gameCodeLabel: UILabel!
     @IBOutlet weak var playerLabel: UILabel!
     
-    var gameCode: String = ""
+    var gameRoom: GameRoom?
     let db = Firestore.firestore()
 
     override func viewDidLoad() {
@@ -27,27 +27,36 @@ class GameViewController: UIViewController {
         self.navigationItem.hidesBackButton = true
     }
     
+    @IBAction func leaveRoomPressed(_ sender: UIButton) {
+        if let gameRoom {
+            gameRoom.leave()
+        }
+    }
+    
     func updateLabels() {
-        gameCodeLabel.text = "Game Code: \(gameCode)"
-        db.collection("gameRooms").document(gameCode)
-            .addSnapshotListener { documentSnapshot, error in
-                
-                guard let document = documentSnapshot else {
-                    print("Error fetching document: \(error!)")
-                    return
+        if let gameRoom {
+            gameCodeLabel.text = "Game Code: \(gameRoom.gameCode)"
+            db.collection("gameRooms").document(gameRoom.gameCode)
+                .addSnapshotListener { documentSnapshot, error in
+                    
+                    guard let document = documentSnapshot else {
+                        print("Error fetching document: \(error!)")
+                        return
+                    }
+                    
+                    guard let data = document.data() else {
+                        print("Document data was empty.")
+                        return
+                    }
+                    
+                    let players = data["players"] as! [String]
+                    self.playerLabel.text = "Players:\n"
+                    players.forEach { player in
+                        self.playerLabel.text?.append("\(player)\n")
+                    }
                 }
-                
-                guard let data = document.data() else {
-                    print("Document data was empty.")
-                    return
-                }
-                
-                let players = data["players"] as! [String]
-                self.playerLabel.text = "Players:\n"
-                players.forEach { player in
-                    self.playerLabel.text?.append("\(player)\n")
-                }
-            }
+        }
+        
     }
 
 }

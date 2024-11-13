@@ -44,6 +44,28 @@ class GameRoom : Codable {
         ])
     }
     
+    func leave() {
+        let db = Firestore.firestore()
+        
+        players.removeAll { $0 == UIDevice.current.identifierForVendor!.uuidString }
+        
+        if players.isEmpty {
+            db.collection("gameRooms").document(gameCode).delete { error in
+                if let error = error {
+                    print("Error deleting game room: \(error)")
+                }
+            }
+        } else {
+            db.collection("gameRooms").document(gameCode).updateData([
+                "players": FieldValue.arrayRemove([UIDevice.current.identifierForVendor!.uuidString])
+            ]) { error in
+                if let error = error {
+                    print("Error updating players in game room: \(error)")
+                }
+            }
+        }
+    }
+    
     static func create() async throws -> GameRoom {
         let gameCode = try await generateUniqueGameCode()
         return GameRoom(gameCode: gameCode)
