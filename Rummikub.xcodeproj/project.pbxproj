@@ -6,11 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		D442A2F82CE2B07F009BCD57 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = D442A2F72CE2B07F009BCD57 /* FirebaseAuth */; };
-		D442A2FC2CE2B07F009BCD57 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D442A2FB2CE2B07F009BCD57 /* FirebaseFirestore */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		D4B4517E2CE2A05C00CB921D /* Rummikub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Rummikub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -41,8 +36,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D442A2F82CE2B07F009BCD57 /* FirebaseAuth in Frameworks */,
-				D442A2FC2CE2B07F009BCD57 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,8 +78,6 @@
 			);
 			name = Rummikub;
 			packageProductDependencies = (
-				D442A2F72CE2B07F009BCD57 /* FirebaseAuth */,
-				D442A2FB2CE2B07F009BCD57 /* FirebaseFirestore */,
 			);
 			productName = Rummikub;
 			productReference = D4B4517E2CE2A05C00CB921D /* Rummikub.app */;
@@ -117,7 +108,6 @@
 			mainGroup = D4B451752CE2A05C00CB921D;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				D442A2F62CE2B07F009BCD57 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D4B4517F2CE2A05C00CB921D /* Products */;
@@ -353,30 +343,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		D442A2F62CE2B07F009BCD57 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = exactVersion;
-				version = 10.29.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D442A2F72CE2B07F009BCD57 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D442A2F62CE2B07F009BCD57 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		D442A2FB2CE2B07F009BCD57 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D442A2F62CE2B07F009BCD57 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D4B451762CE2A05C00CB921D /* Project object */;
 }
