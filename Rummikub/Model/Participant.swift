@@ -11,6 +11,6 @@ import GameKit
 struct Participant : Identifiable {
     var id = UUID()
     var player: GKPlayer
-    var cards: [Tile]
-    var avater = UIImage(named: "person.crop.circle")
+    var tiles: [Tile] = []
+    var avatar = UIImage(named: "person.crop.circle")
 }
