@@ -12,15 +12,20 @@ class LandingViewController: UIViewController {
 
     @IBOutlet weak var multiplayerButton: UIButton!
     
+    var board = Board()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
         signUserIntoGameCenter()
+        
+        print(board.drawPile.count)
     }
     
     @IBAction func multiplayerPressed(_ sender: UIButton) {
-        
+        print(board.draw() ?? "No cards left")
+        print(board.drawPile.count)
     }
     
     func signUserIntoGameCenter() {

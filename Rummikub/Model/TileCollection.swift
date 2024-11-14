@@ -5,7 +5,7 @@
 //  Created by Robert Haynes on 2024/11/14.
 //
 
-import Foundation
+import UIKit
 
 enum CollectionType {
     case run
@@ -15,9 +15,9 @@ enum CollectionType {
 
 struct Tile : Codable {
     let value: Int
-    let colour: UIColor
+    let colour: String
     
-    init(value: Int, colour: UIColor) {
+    init(value: Int, colour: String) {
         self.value = value
         self.colour = colour
     }
@@ -35,7 +35,7 @@ struct TileCollection: Codable {
         tiles.append(tile)
     }
     
-    mutating func popTile(withValue value: Int, withColour colour: UIColor) -> Tile? {
+    mutating func popTile(withValue value: Int, withColour colour: String) -> Tile? {
         return tiles.first { $0.value == value && $0.colour == colour }
     }
     
@@ -60,6 +60,6 @@ struct TileCollection: Codable {
         let sortedValues = tiles.map { $0.value }.sorted()
         
         let isSequential = zip(sortedValues, sortedValues.dropFirst()).allSatisfy { $1 == $0 + 1 }
-        return cards.allSatisfy { $0.colour == firstColor } && isSequential && tiles.count >= 3
+        return tiles.allSatisfy { $0.colour == firstColor } && isSequential && tiles.count >= 3
     }
 }
