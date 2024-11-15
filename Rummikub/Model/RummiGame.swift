@@ -31,7 +31,7 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
         return windowScene?.windows.first?.rootViewController
     }
     
-    func getPlayerInformation(remotePlayers: [GKPlayer]) {
+    func getPlayerInformation() {
 
         GKLocalPlayer.local.loadPhoto(for: GKPlayer.PhotoSize.small) { image, error in
             if let image {
@@ -41,22 +41,10 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
             }
         }
         
-        for remotePlayer in remotePlayers {
-            remotePlayer.loadPhoto(for: GKPlayer.PhotoSize.small) { image, error in
-                if let image {
-                    self.opponents.append(Participant(player: remotePlayer, avatar: image))
-                } else {
-                    self.opponents.append(Participant(player: remotePlayer))
-                }
-            }
-        }
-        
         GKLocalPlayer.local.register(self)
     }
     
-    func startMatch(playersToInvite: [GKPlayer]) {
-        
-        getPlayerInformation(remotePlayers: playersToInvite)
+    func startMatch(with playersToInvite: [GKPlayer]) {
         
         let request = GKMatchRequest()
         request.minPlayers = 2
