@@ -31,6 +31,17 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
         return windowScene?.windows.first?.rootViewController
     }
     
+    func resetGame() {
+        // Reset the game data.
+        playingGame = false
+        myTurn = false
+        currentMatchId = nil
+        localParticipant = nil
+        opponents = []
+        board = Board()
+        youWon = false
+    }
+    
     func getPlayerInformation() {
 
         GKLocalPlayer.local.loadPhoto(for: GKPlayer.PhotoSize.small) { image, error in
@@ -95,7 +106,6 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
                 // TODO: Implement custom end of match handling
             } else {
                 // Upload move
-                // lockInMove()
                 
                 let gameData = (encodeGameData() ?? match.matchData)!
                 let nextParticipants = activeParticipants.filter { $0 != match.currentParticipant }
