@@ -24,7 +24,7 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
     // Persistent Game Data
     @Published var localParticipant: Participant? = nil
     @Published var opponents: [Participant] = []
-    @Published var board: Board? = nil
+    @Published var board = Board()
     
     var rootViewController: UIViewController? {
         let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
@@ -97,8 +97,7 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
                 // Upload move
                 // lockInMove()
                 
-//                let gameData = (encodeGameData() ?? match.matchData)!
-                let gameData = match.matchData!
+                let gameData = (encodeGameData() ?? match.matchData)!
                 let nextParticipants = activeParticipants.filter { $0 != match.currentParticipant }
                 
                 match.setLocalizableMessageWithKey("\(localParticipant?.player.alias ?? "A player") has made their move", arguments: nil)
@@ -124,8 +123,7 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
             if myTurn {
                 
                 // Create the game data to store in Game Center.
-//                let gameData = (encodeGameData() ?? match.matchData)!
-                let gameData = match.matchData!
+                let gameData = (encodeGameData() ?? match.matchData)!
                 // Remove the participants who quit and the current participant.
                 let nextParticipants = match.participants.filter {
                   ($0.status != .done) && ($0 != match.currentParticipant)

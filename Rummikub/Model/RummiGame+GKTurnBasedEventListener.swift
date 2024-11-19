@@ -61,7 +61,7 @@ extension RummiGame: GKTurnBasedEventListener {
                                     opponents.append(Participant(player: (participant.player)!, avatar: image!))
                                     
                                     // Restore the current game data from the match object.
-                                    //                                decodeGameData(matchData: match.matchData!)
+                                    decodeGameData(matchData: match.matchData!)
                                 }
                             }
                         }
