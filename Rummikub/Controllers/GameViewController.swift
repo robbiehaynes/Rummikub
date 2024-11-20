@@ -11,24 +11,34 @@ class GameViewController: UIViewController {
     
     @IBOutlet weak var gameCodeLabel: UILabel!
     @IBOutlet weak var playerLabel: UILabel!
+    
+    var game: RummiGame?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        updateLabels()
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationItem.hidesBackButton = true
+        
+        if let game = game {
+            gameCodeLabel.text = game.currentMatchId
+            playerLabel.text = game.localParticipant?.player.alias
+            
+            print(game.board.collections)
+            print(game.board.drawPile)
+        } else {
+            print("Im here")
+        }
     }
     
     @IBAction func leaveRoomPressed(_ sender: UIButton) {
-        
-    }
-    
-    func updateLabels() {
-        
+        Task {
+            await game?.forfeitMatch()
+            self.dismiss(animated: true)
+        }
     }
 
 }

@@ -11,7 +11,7 @@ import GameKit
 extension RummiGame: GKTurnBasedEventListener {
     
     func player(_ player: GKPlayer, didRequestMatchWithOtherPlayers playersToInvite: [GKPlayer]) {
-        startMatch(with: playersToInvite)
+        startMatch(playersToInvite)
     }
     
     func player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) {
@@ -103,5 +103,6 @@ extension RummiGame: GKTurnBasedEventListener {
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.0, repeats: false)
         // Create the request with the content and the trigger.
         let request = UNNotificationRequest(identifier: "com.haynoway.rummiGameEnded", content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
     }
 }

@@ -12,47 +12,49 @@ class LandingViewController: UIViewController {
 
     @IBOutlet weak var multiplayerButton: UIButton!
     
-    var board = Board()
+    var game: RummiGame? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        GameCenterHelper.helper.viewController = self
         
-        signUserIntoGameCenter()
+        multiplayerButton.isEnabled = GameCenterHelper.isAuthenticated
         
-        print(board.drawPile.count)
+        NotificationCenter.default.addObserver(
+          self,
+          selector: #selector(authenticationChanged(_:)),
+          name: .authenticationChanged,
+          object: nil
+        )
     }
     
     @IBAction func multiplayerPressed(_ sender: UIButton) {
-        print(board.draw() ?? "No cards left")
-        print(board.drawPile.count)
+        GameCenterHelper.helper.presentMatchmaker()
     }
     
-    func signUserIntoGameCenter() {
-        GKLocalPlayer.local.authenticateHandler = { viewController, error in
-            if viewController != nil {
-                return
-            }
-            
-            if error != nil {
-                let alert = UIAlertController(
-                    title: "Oh no!",
-                    message: "There was an error authenticating your GameCenter credentials. Please try again.",
-                    preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default))
-                self.present(alert, animated: true, completion: nil)
-                
-                return
-            }
-            
-            if GKLocalPlayer.local.isAuthenticated {
-                
-                if GKLocalPlayer.local.isMultiplayerGamingRestricted {
-                    self.multiplayerButton.isEnabled = false
-                }
-            }
-            
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let gameVC = segue.destination as? GameViewController {
+            print("Sending game to GameViewController")
+            gameVC.game = game!
         }
+    }
+    
+    // MARK: - Notifications
+
+    @objc private func authenticationChanged(_ notification: Notification) {
+        multiplayerButton.isEnabled = notification.object as? Bool ?? false
+    }
+    
+    @objc private func presentGame(_ notification: Notification) {
+        guard let match = notification.object as? GKTurnBasedMatch else { return }
+        
+        loadAndDisplay(match: match)
+    }
+    
+    //MARK: - Helpers
+    private func loadAndDisplay(match: GKTurnBasedMatch) {
+        // TODO: Implement this function
     }
 }
 

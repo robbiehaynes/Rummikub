@@ -55,12 +55,14 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
         GKLocalPlayer.local.register(self)
     }
     
-    func startMatch(with playersToInvite: [GKPlayer]) {
+    func startMatch(_ playersToInvite: [GKPlayer]? = nil) {
         
         let request = GKMatchRequest()
         request.minPlayers = 2
         request.maxPlayers = 4
-        request.recipients = playersToInvite
+        if playersToInvite != nil {
+            request.recipients = playersToInvite
+        }
         
         // Present the interface where the player selects opponents and starts the game.
         let viewController = GKTurnBasedMatchmakerViewController(matchRequest: request)
@@ -118,7 +120,7 @@ class RummiGame: NSObject, GKMatchDelegate, GKLocalPlayerListener, ObservableObj
             }
         } catch {
             print("Error: \(error.localizedDescription).")
-//            resetGame()
+            resetGame()
         }
     }
     
