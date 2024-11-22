@@ -67,22 +67,108 @@
                     <navigationItem key="navigationItem" id="TH6-b8-Rp1"/>
                     <connections>
                         <outlet property="multiplayerButton" destination="chX-be-SKz" id="TRX-8h-pYY"/>
-                        <segue destination="WVo-IP-YMn" kind="show" identifier="goToGame" id="hjb-OY-9P2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1040.4580152671756" y="3.5211267605633805"/>
         </scene>
-        <!--Game-->
-        <scene sceneID="sdS-Eb-QQG">
+        <!--Game View Controller-->
+        <scene sceneID="4kp-TW-ibW">
             <objects>
-                <viewControllerPlaceholder storyboardName="Game" id="WVo-IP-YMn" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Wyc-iW-n3b"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eJT-Be-P2F" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController storyboardIdentifier="GameViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zp8-A5-phm" customClass="GameViewController" customModule="Rummikub" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EvW-Iw-Fy3">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="E5j-9x-lhL">
+                                <rect key="frame" x="20" y="99" width="353" height="679"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Game" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AlV-T4-DVk">
+                                        <rect key="frame" x="0.0" y="0.0" width="353" height="76.666666666666671"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hand:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mRf-OC-uT2">
+                                        <rect key="frame" x="0.0" y="84.666666666666657" width="353" height="435.33333333333337"/>
+                                        <fontDescription key="fontDescription" name="Futura-Medium" family="Futura" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4yt-G6-nz7">
+                                        <rect key="frame" x="111.66666666666666" y="528" width="130" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="kG1-dp-u0j"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="tbJ-SW-byN"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Draw Tile">
+                                            <backgroundConfiguration key="background" cornerRadius="0.0" image="button-bg"/>
+                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="drawTilePressed:" destination="zp8-A5-phm" eventType="touchUpInside" id="hsl-GD-htn"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jRO-g1-BPt">
+                                        <rect key="frame" x="111.66666666666666" y="581" width="130" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="45" id="7Ez-ds-sRw"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="I5i-5b-3lu"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="End Turn">
+                                            <backgroundConfiguration key="background" cornerRadius="0.0" image="button-bg"/>
+                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="endTurnPressed:" destination="zp8-A5-phm" eventType="touchUpInside" id="IRv-2x-jzy"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="edT-Jh-PRl">
+                                        <rect key="frame" x="111.66666666666666" y="634" width="130" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="e0z-Ir-tdg"/>
+                                            <constraint firstAttribute="height" constant="45" id="lgg-W7-KnL"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Leave Room">
+                                            <backgroundConfiguration key="background" cornerRadius="0.0" image="button-bg"/>
+                                            <color key="baseForegroundColor" systemColor="labelColor"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="leaveRoomPressed:" destination="zp8-A5-phm" eventType="touchUpInside" id="MNI-tm-XlO"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="mRf-OC-uT2" firstAttribute="leading" secondItem="E5j-9x-lhL" secondAttribute="leading" id="2ts-cc-YIU"/>
+                                    <constraint firstAttribute="trailing" secondItem="AlV-T4-DVk" secondAttribute="trailing" id="GIM-Bu-04G"/>
+                                    <constraint firstItem="AlV-T4-DVk" firstAttribute="leading" secondItem="E5j-9x-lhL" secondAttribute="leading" id="JIn-rH-qYr"/>
+                                    <constraint firstAttribute="trailing" secondItem="mRf-OC-uT2" secondAttribute="trailing" id="YCW-6s-0re"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="I0s-MJ-NlY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="I0s-MJ-NlY" firstAttribute="trailing" secondItem="E5j-9x-lhL" secondAttribute="trailing" constant="20" id="5fZ-wH-oSX"/>
+                            <constraint firstItem="E5j-9x-lhL" firstAttribute="leading" secondItem="I0s-MJ-NlY" secondAttribute="leading" constant="20" id="EXP-2q-MIx"/>
+                            <constraint firstItem="E5j-9x-lhL" firstAttribute="top" secondItem="I0s-MJ-NlY" secondAttribute="top" constant="40" id="XtW-X4-jdv"/>
+                            <constraint firstItem="I0s-MJ-NlY" firstAttribute="bottom" secondItem="E5j-9x-lhL" secondAttribute="bottom" constant="40" id="Y0f-9J-SUI"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="drawTileButton" destination="4yt-G6-nz7" id="GSs-EB-lHU"/>
+                        <outlet property="endTurnButton" destination="jRO-g1-BPt" id="KnV-pg-ZVX"/>
+                        <outlet property="gameLabel" destination="AlV-T4-DVk" id="ISe-l2-t0u"/>
+                        <outlet property="handLabel" destination="mRf-OC-uT2" id="4aD-zZ-olC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="I4M-KQ-MDk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1615" y="4"/>
+            <point key="canvasLocation" x="1854" y="4"/>
         </scene>
     </scenes>
     <resources>

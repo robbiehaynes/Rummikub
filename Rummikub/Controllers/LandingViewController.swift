@@ -12,7 +12,7 @@ class LandingViewController: UIViewController {
 
     @IBOutlet weak var multiplayerButton: UIButton!
     
-    var game: RummiGame? = nil
+    var gameModel: GameModel? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,17 +27,17 @@ class LandingViewController: UIViewController {
           name: .authenticationChanged,
           object: nil
         )
+        
+        NotificationCenter.default.addObserver(
+          self,
+          selector: #selector(presentGame(_:)),
+          name: .presentGame,
+          object: nil
+        )
     }
     
     @IBAction func multiplayerPressed(_ sender: UIButton) {
         GameCenterHelper.helper.presentMatchmaker()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let gameVC = segue.destination as? GameViewController {
-            print("Sending game to GameViewController")
-            gameVC.game = game!
-        }
     }
     
     // MARK: - Notifications
@@ -54,7 +54,33 @@ class LandingViewController: UIViewController {
     
     //MARK: - Helpers
     private func loadAndDisplay(match: GKTurnBasedMatch) {
-        // TODO: Implement this function
+        
+        match.loadMatchData() { data, error in
+            
+            if let data {
+                if data.isEmpty {
+                    self.gameModel = GameModel()
+                } else {
+                    self.gameModel = try? PropertyListDecoder().decode(GameModel.self, from: data)
+                    guard (self.gameModel != nil) else { return }
+                }
+            } else {
+                self.gameModel = GameModel()
+            }
+            
+            GameCenterHelper.helper.currentMatch = match
+            
+            print(GameCenterHelper.helper.getOpponentAliases())
+            
+            self.gameModel!.instantiatePlayers(
+                localPlayer: GameCenterHelper.helper.localAlias ?? "",
+                opponents: GameCenterHelper.helper.getOpponentAliases())
+            
+            let gameVC = self.storyboard?.instantiateViewController(withIdentifier: "GameViewController") as! GameViewController
+            gameVC.gameModel = self.gameModel!
+            gameVC.modalPresentationStyle = .fullScreen
+            self.present(gameVC, animated: true)
+        }
     }
 }
 

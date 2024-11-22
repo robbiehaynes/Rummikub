@@ -18,6 +18,23 @@ final class GameCenterHelper: NSObject {
     var currentMatchmakerVC: GKTurnBasedMatchmakerViewController?
     var viewController: UIViewController?
     
+    var currentMatch: GKTurnBasedMatch?
+
+    var localAlias: String? {
+        GKLocalPlayer.local.alias
+    }
+    
+    var canTakeTurnForCurrentMatch: Bool {
+        guard let match = currentMatch else { return true }
+        
+        return GKLocalPlayer.local == match.currentParticipant?.player
+    }
+    
+    enum GameCenterHelperError: Error {
+        case matchNotFound
+        case gameEncodingError
+    }
+    
     override init() {
         super.init()
         
@@ -57,11 +74,92 @@ final class GameCenterHelper: NSObject {
         currentMatchmakerVC = vc
         viewController?.present(vc, animated: true)
     }
+    
+    func endTurn(_ model: GameModel, completion: @escaping CompletionBlock) {
+        guard let match = currentMatch else {
+            completion(GameCenterHelperError.matchNotFound)
+            return
+        }
+        
+        let activeParticipants = match.participants.filter { $0.status != .done }
+        let nextParticipants = activeParticipants.filter { $0 != match.currentParticipant }
+        
+        do {
+            match.endTurn(
+                withNextParticipants: nextParticipants,
+                turnTimeout: GKTurnTimeoutDefault,
+                match: try PropertyListEncoder().encode(model),
+                completionHandler: completion)
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func win(completion: @escaping CompletionBlock) {
+        guard let match = currentMatch else {
+            completion(GameCenterHelperError.matchNotFound)
+            return
+        }
+        
+        match.currentParticipant?.matchOutcome = .won
+        match.participants.forEach { participant in
+            participant.matchOutcome = .lost
+        }
+        
+        match.endMatchInTurn(
+            withMatch: match.matchData ?? Data(),
+            completionHandler: completion
+        )
+    }
+    
+    func forfeitMatch(_ model: GameModel, completion: @escaping CompletionBlock) async {
+        guard let match = currentMatch else {
+            completion(GameCenterHelperError.matchNotFound)
+            return
+        }
+        
+        do {
+            if canTakeTurnForCurrentMatch {
+                // Remove the participants who quit and the current participant.
+                let nextParticipants = match.participants.filter {
+                  ($0.status != .done) && ($0 != match.currentParticipant)
+                }
+
+                // Forfeit the match.
+                match.participantQuitInTurn(
+                    with: GKTurnBasedMatch.Outcome.quit,
+                    nextParticipants: nextParticipants,
+                    turnTimeout: GKTurnTimeoutDefault,
+                    match: try PropertyListEncoder().encode(model),
+                    completionHandler: completion)
+            } else {
+                try await match.participantQuitOutOfTurn(with: GKTurnBasedMatch.Outcome.quit)
+            }
+        } catch {
+            completion(error)
+        }
+    }
+    
+    func getOpponentAliases() -> [String] {
+        return currentMatch?.participants
+            .filter { $0.player != GKLocalPlayer.local }
+            .compactMap { $0.player?.alias } ?? []
+    }
+}
+
+extension GameCenterHelper: GKTurnBasedEventListener {
+    func player(_ player: GKPlayer, matchEnded match: GKTurnBasedMatch) {
+        GameCenterHelper.helper.currentMatch = nil
+    }
 }
 
 extension GameCenterHelper: GKTurnBasedMatchmakerViewControllerDelegate {
     func turnBasedMatchmakerViewControllerWasCancelled(_ viewController: GKTurnBasedMatchmakerViewController) {
         viewController.dismiss(animated: true)
+    }
+    
+    func turnBasedMatchmakerViewController(_ viewController: GKTurnBasedMatchmakerViewController, didFind match: GKTurnBasedMatch) {
+        print("Dismissing TBMVC")
     }
     
     func turnBasedMatchmakerViewController(_ viewController: GKTurnBasedMatchmakerViewController, didFailWithError error: Error) {
@@ -81,9 +179,9 @@ extension GameCenterHelper: GKLocalPlayerListener {
     
     func player(_ player: GKPlayer, receivedTurnEventFor match: GKTurnBasedMatch, didBecomeActive: Bool) {
         
-        if let vc = currentMatchmakerVC {
-          currentMatchmakerVC = nil
-          vc.dismiss(animated: true)
+        if currentMatchmakerVC != nil {
+            currentMatchmakerVC = nil
+            viewController?.presentedViewController?.dismiss(animated: true)
         }
 
         guard didBecomeActive else { return }

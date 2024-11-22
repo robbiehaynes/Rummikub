@@ -10,6 +10,24 @@ import Foundation
 struct GameData : Codable {
     var playerHands: [String:[Tile]]
     var board: Board
+    
+    init(playerHands: [String:[Tile]] = [:], board: Board = Board()) {
+        self.playerHands = playerHands
+        self.board = board
+    }
+    
+    func encode() -> Data? {
+        let encoder = PropertyListEncoder()
+        encoder.outputFormat = .xml
+        
+        do {
+            let data = try encoder.encode(self)
+            return data
+        } catch {
+            print("Error: \(error.localizedDescription).")
+            return nil
+        }
+    }
 }
 
 extension RummiGame {

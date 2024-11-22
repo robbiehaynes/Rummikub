@@ -30,18 +30,23 @@ struct Board: Codable {
         // for each colour, 1 up to incl. 13, twice
         let availableColours : [String] = ["red", "green", "blue", "yellow"]
         
-        for colour in availableColours {
-            for num in 1...13 {
-                let tile = Tile(value: num, colour: colour)
-                let tile2 = Tile(value: num, colour: colour)
-                pile.append(tile)
-                pile.append(tile2)
-            }
+        for num in 1...10 {
+            let tile = Tile(value: num, colour: "red")
+            pile.append(tile)
         }
         
-        // Two Jokers
-        pile.append(Tile(value: 20, colour: "black"))
-        pile.append(Tile(value: 20, colour: "black"))
+//        for colour in availableColours {
+//            for num in 1...13 {
+//                let tile = Tile(value: num, colour: colour)
+//                let tile2 = Tile(value: num, colour: colour)
+//                pile.append(tile)
+//                pile.append(tile2)
+//            }
+//        }
+//        
+//        // Two Jokers
+//        pile.append(Tile(value: 20, colour: "black"))
+//        pile.append(Tile(value: 20, colour: "black"))
         
         return pile
     }
