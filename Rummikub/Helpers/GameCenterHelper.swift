@@ -27,7 +27,7 @@ final class GameCenterHelper: NSObject {
     var canTakeTurnForCurrentMatch: Bool {
         guard let match = currentMatch else { return true }
         
-        return GKLocalPlayer.local == match.currentParticipant?.player
+        return match.isLocalPlayersTurn
     }
     
     enum GameCenterHelperError: Error {
@@ -81,12 +81,9 @@ final class GameCenterHelper: NSObject {
             return
         }
         
-        let activeParticipants = match.participants.filter { $0.status != .done }
-        let nextParticipants = activeParticipants.filter { $0 != match.currentParticipant }
-        
         do {
             match.endTurn(
-                withNextParticipants: nextParticipants,
+                withNextParticipants: match.others,
                 turnTimeout: GKTurnTimeoutDefault,
                 match: try PropertyListEncoder().encode(model),
                 completionHandler: completion)
@@ -102,8 +99,8 @@ final class GameCenterHelper: NSObject {
         }
         
         match.currentParticipant?.matchOutcome = .won
-        match.participants.forEach { participant in
-            participant.matchOutcome = .lost
+        match.others.forEach { other in
+            other.matchOutcome = .lost
         }
         
         match.endMatchInTurn(

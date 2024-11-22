@@ -25,7 +25,10 @@ struct GameModel : Codable {
             }
             playerHands[player]!.append(tile)
             
-            if board.drawPile.count == 0 { winner = player }
+            if board.drawPile.count == 0 {
+                print("You win!")
+                winner = player
+            }
         } else {
             // No tiles left
             print("No tiles left")

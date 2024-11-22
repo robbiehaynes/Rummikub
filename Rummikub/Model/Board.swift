@@ -30,7 +30,7 @@ struct Board: Codable {
         // for each colour, 1 up to incl. 13, twice
         let availableColours : [String] = ["red", "green", "blue", "yellow"]
         
-        for num in 1...10 {
+        for num in 1...5 {
             let tile = Tile(value: num, colour: "red")
             pile.append(tile)
         }
